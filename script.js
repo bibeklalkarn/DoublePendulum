@@ -172,6 +172,8 @@ let ensemble = [];
 let original = null;
 let previewPendulum = null;
 
+let luckyBtn;
+
 // =======================================
 // Pendulum Class
 // =======================================
@@ -312,6 +314,11 @@ function setup() {
   devVal = createSpan("");
 
 
+  luckyBtn = createButton("I'm Feeling Lucky 🎲");
+
+  luckyBtn.addClass("control-btn"); // optional, if you style buttons
+  luckyBtn.mousePressed(feelingLucky);
+
   layoutUI();
   resetSim();
 }
@@ -329,7 +336,8 @@ function layoutUI() {
 
   startB.position(20, y);
   stopB.position(80, y);
-  resetB.position(140, y);
+  resetB.position(140, y); y+=40;
+  luckyBtn.position(20, y);
 }
 
 // =======================================
@@ -409,8 +417,8 @@ function draw() {
 //   let originX = width * (window.innerWidth < 768 ? 0.65 : 0.5);
   let originX = width * 0.5;
   let originY = height * (window.innerWidth < 768 ? 0.35 : 0.42);
-  t1Val.html(t1S.value()*180/PI.toFixed(2));
-  t2Val.html(t2S.value()*180/PI.toFixed(2));
+  t1Val.html((t1S.value()*180/PI).toFixed(0));
+  t2Val.html((t2S.value()*180/PI).toFixed(0));
   L1Val.html(L1S.value());
   L2Val.html(L2S.value());
   m1Val.html(m1S.value().toFixed(2));
@@ -519,4 +527,24 @@ function rainbow(t) {
     255 * g,
     255 * b
   );
+}
+function feelingLucky() {
+  // random angles (−π to π feels natural)
+  let a1 = random(0, 2*PI);
+  let a2 = random(0, 2*PI);
+
+  // update sliders
+  t1S.value(a1);
+  t2S.value(a2);
+
+  // update simulation state
+  theta1 = a1;
+  theta2 = a2;
+
+  // IMPORTANT: reset velocities so energy stays sane
+  omega1 = 0;
+  omega2 = 0;
+
+  // optional: clear trails if you want
+  // trails = [];
 }
