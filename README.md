@@ -2,7 +2,7 @@
 
 An interactive, browser-based **double pendulum chaos simulator** built with **p5.js**, designed to visually demonstrate **sensitive dependence on initial conditions** using an ensemble of nearly identical systems.
 
-🔗 **Live Demo:** https://<your-username>.github.io/<repo-name>/
+🔗 **Live Demo:** https://bibeklalkarn.github.io/DoublePendulum/
 
 ---
 
