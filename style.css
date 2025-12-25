@@ -1,6 +1,43 @@
 /* =========================
    Reset & viewport control
    ========================= */
+:root {
+  --ui-scale: clamp(1.2, 1.5vw, 1.6);
+}
+p {
+  font-size: calc(13px * var(--ui-scale));
+  line-height: calc(14px * var(--ui-scale));
+}
+span {
+  font-size: calc(12px * var(--ui-scale));
+  min-width: calc(50px * var(--ui-scale));
+}
+p,
+span {
+  margin-bottom: calc(6px * var(--ui-scale));
+}
+input[type="range"] {
+  width: calc(200px * var(--ui-scale));
+  height: calc(6px * var(--ui-scale));
+}
+input[type="range"]::-webkit-slider-thumb {
+  width: calc(16px * var(--ui-scale));
+  height: calc(16px * var(--ui-scale));
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: calc(16px * var(--ui-scale));
+  height: calc(16px * var(--ui-scale));
+}
+button {
+  font-size: calc(13px * var(--ui-scale));
+  padding: calc(6px * var(--ui-scale)) calc(12px * var(--ui-scale));
+  border-radius: calc(10px * var(--ui-scale));
+}
+.ui-panel {
+  padding: calc(14px * var(--ui-scale));
+}
+
 
 html, body {
   margin: 0;
