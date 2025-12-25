@@ -1,163 +1,4 @@
-// let g = 900.81;
-
-// // parameters
-// let L1 = 150;
-// let L2 = 150;
-// let m1 = 1;
-// let m2 = 1;
-
-// // state
-// let theta1 = Math.PI / 2;
-// let theta2 = Math.PI / 2;
-// let omega1 = 0;
-// let omega2 = 0;
-
-// let dt = 0.02;
-// let trail = [];
-
-// // UI
-// let t1S, t2S, L1S, L2S, m1S, m2S;
-// let startB, stopB, resetB;
-
-// let state = "preview"; // preview | running | stopped
-
-// function setup() {
-//   createCanvas(600, 600);
-//   pixelDensity(2);
-
-//   t1S = createSlider(0, 2*PI, PI / 2, 0.01);
-//   t2S = createSlider(0, 2*PI, PI / 2 + 0.01, 0.01);
-//   L1S = createSlider(50, 250, 150, 1);
-//   L2S = createSlider(50, 250, 150, 1);
-//   m1S = createSlider(0.1, 5, 1, 0.1);
-//   m2S = createSlider(0.1, 5, 1, 0.1);
-
-//   startB = createButton("Start");
-//   stopB = createButton("Stop");
-//   resetB = createButton("Reset");
-
-//   startB.mousePressed(() => state = "running");
-//   stopB.mousePressed(() => state = "stopped");
-//   resetB.mousePressed(resetSim);
-
-//   layoutUI();
-//   resetSim();
-// }
-
-// function layoutUI() {
-//   let y = 20;
-//   createP("θ₁").position(20, y); t1S.position(80, y); y += 30;
-//   createP("θ₂").position(20, y); t2S.position(80, y); y += 30;
-//   createP("L₁").position(20, y); L1S.position(80, y); y += 30;
-//   createP("L₂").position(20, y); L2S.position(80, y); y += 30;
-//   createP("m₁").position(20, y); m1S.position(80, y); y += 30;
-//   createP("m₂").position(20, y); m2S.position(80, y); y += 40;
-
-//   startB.position(20, y);
-//   stopB.position(80, y);
-//   resetB.position(140, y);
-// }
-
-// function resetSim() {
-//   state = "preview";
-
-//   theta1 = t1S.value();
-//   theta2 = t2S.value();
-//   omega1 = 0;
-//   omega2 = 0;
-
-//   L1 = L1S.value();
-//   L2 = L2S.value();
-//   m1 = m1S.value();
-//   m2 = m2S.value();
-
-//   trail = [];
-// }
-
-// function draw() {
-//   background(0);
-
-//   let originX = width / 2;
-//   let originY = 150;
-
-//   if (state === "preview") {
-//     theta1 = t1S.value();
-//     theta2 = t2S.value();
-//     L1 = L1S.value();
-//     L2 = L2S.value();
-//     m1 = m1S.value();
-//     m2 = m2S.value();
-//   }
-
-//   if (state === "running") {
-//     stepPhysics();
-//   }
-
-//   // positions
-//   let x1 = originX + L1 * sin(theta1);
-//   let y1 = originY + L1 * cos(theta1);
-//   let x2 = x1 + L2 * sin(theta2);
-//   let y2 = y1 + L2 * cos(theta2);
-
-//   // trail
-//   trail.push({ x: x2, y: y2 });
-//   if (trail.length > 2000) trail.shift();
-
-//   stroke(255, 100, 100);
-//   noFill();
-//   beginShape();
-//   for (let p of trail) vertex(p.x, p.y);
-//   endShape();
-
-//   stroke(255);
-//   strokeWeight(2);
-//   line(originX, originY, x1, y1);
-//   line(x1, y1, x2, y2);
-
-//   fill(255);
-//   circle(x1, y1, 10);
-//   circle(x2, y2, 10);
-// }
-
-// function stepPhysics() {
-//   let delta = theta2 - theta1;
-
-//   let denom1 = (m1 + m2) * L1 - m2 * L1 * cos(delta) * cos(delta);
-//   let denom2 = (L2 / L1) * denom1;
-
-//   let a1 = (
-//     m2 * L1 * omega1 * omega1 * sin(delta) * cos(delta) +
-//     m2 * g * sin(theta2) * cos(delta) +
-//     m2 * L2 * omega2 * omega2 * sin(delta) -
-//     (m1 + m2) * g * sin(theta1)
-//   ) / denom1;
-
-//   let a2 = (
-//     -m2 * L2 * omega2 * omega2 * sin(delta) * cos(delta) +
-//     (m1 + m2) * g * sin(theta1) * cos(delta) -
-//     (m1 + m2) * L1 * omega1 * omega1 * sin(delta) -
-//     (m1 + m2) * g * sin(theta2)
-//   ) / denom2;
-
-//   omega1 += a1 * dt;
-//   omega2 += a2 * dt;
-
-//   theta1 += omega1 * dt;
-//   theta2 += omega2 * dt;
-// }
-
-
-
-
-
-// ===============================
-// Double Pendulum Chaos Ensemble
-// ===============================
-
-// =======================================
-// Double Pendulum Chaos Ensemble (FINAL)
-// =======================================
-
+let UI_SCALE = 1.4;   // try 1.3–1.6
 let g = 2000;
 let dt = 0.005;
 
@@ -324,7 +165,10 @@ function setup() {
 }
 
 function layoutUI() {
-  let y = 20;
+//   let y = 20;
+  let s = UI_SCALE;
+
+  let y = 20 * s;
   createP("θ₁").position(20, y); t1S.position(80, y); t1Val.position(300, y); y += 25;
   createP("θ₂").position(20, y); t2S.position(80, y); t2Val.position(300, y); y += 25;
   createP("L₁").position(20, y); L1S.position(80, y); L1Val.position(300, y); y += 25;
@@ -415,8 +259,12 @@ function draw() {
   background(0);
 
 //   let originX = width * (window.innerWidth < 768 ? 0.65 : 0.5);
-  let originX = width * 0.5;
-  let originY = height * (window.innerWidth < 768 ? 0.35 : 0.42);
+  scale(UI_SCALE);
+
+  let originX = (width / UI_SCALE) * 0.5;
+  let originY = (height / UI_SCALE) * (window.innerWidth < 768 ? 0.35 : 0.42);
+//   let originX = width * 0.5;
+//   let originY = height * (window.innerWidth < 768 ? 0.35 : 0.42);
   t1Val.html((t1S.value()*180/PI).toFixed(0));
   t2Val.html((t2S.value()*180/PI).toFixed(0));
   L1Val.html(L1S.value());
