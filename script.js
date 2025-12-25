@@ -1,6 +1,8 @@
 let UI_SCALE = 1.4;   // try 1.3–1.6
 let g = 2000;
 let dt = 0.005;
+const IS_MOBILE = window.innerWidth < 768;
+const MOBILE_DRAW_SCALE = 2.5;   // try 0.7–0.8
 
 // UI
 let t1S, t2S, L1S, L2S, m1S, m2S;
@@ -14,6 +16,8 @@ let original = null;
 let previewPendulum = null;
 
 let luckyBtn;
+let trailLenS;
+let trailLenVal;
 
 // =======================================
 // Pendulum Class
@@ -136,6 +140,9 @@ function setup() {
 
   copiesS = createSlider(0, 100, 0, 10);
   devS = createSlider(0.001, 0.01, 0.003, 0.001);
+  trailLenS = createSlider(50, 1000, 600, 50);
+  trailLenVal = createSpan("");
+
 
   startB = createButton("Start");
   stopB = createButton("Stop");
@@ -176,7 +183,9 @@ function layoutUI() {
   createP("m₁").position(20, y); m1S.position(80, y); m1Val.position(300, y); y += 25;
   createP("m₂").position(20, y); m2S.position(80, y); m2Val.position(300, y); y += 25;
   createP("Copies").position(20, y); copiesS.position(80, y); copiesVal.position(300, y); y += 25;
-  createP("Deviation").position(20, y); devS.position(80, y); devVal.position(300, y); y += 40;
+  createP("Deviation").position(20, y); devS.position(80, y); devVal.position(300, y); y += 25;
+  createP("Trail Length").position(20, y); trailLenS.position(80, y); trailLenVal.position(300, y); y += 40;
+
 
   startB.position(20, y);
   stopB.position(80, y);
@@ -257,14 +266,21 @@ function startSim() {
 
 function draw() {
   background(0);
+  let drawScale = IS_MOBILE ? 0.5 : 1.0;
+  push();
+  let tl = trailLenS.value();
 
-//   let originX = width * (window.innerWidth < 768 ? 0.65 : 0.5);
-  scale(UI_SCALE);
+  if (previewPendulum) previewPendulum.trailMax = tl;
+  if (original) original.trailMax = tl;
+  for (let p of ensemble) p.trailMax = tl;
 
-  let originX = (width / UI_SCALE) * 0.5;
-  let originY = (height / UI_SCALE) * (window.innerWidth < 768 ? 0.35 : 0.42);
-//   let originX = width * 0.5;
-//   let originY = height * (window.innerWidth < 768 ? 0.35 : 0.42);
+//   translate(width * 0.2, height * (IS_MOBILE ? 0.25 : 0.42));
+
+  scale(drawScale);
+  let originX = (width/drawScale) *  (IS_MOBILE ? 0.2 : 0.5);
+  let originY = (height/drawScale) * (IS_MOBILE ? 0.26 : 0.42);
+
+
   t1Val.html((t1S.value()*180/PI).toFixed(0));
   t2Val.html((t2S.value()*180/PI).toFixed(0));
   L1Val.html(L1S.value());
@@ -273,6 +289,8 @@ function draw() {
   m2Val.html(m2S.value().toFixed(2));
   copiesVal.html(copiesS.value());
   devVal.html(devS.value().toFixed(4));
+  trailLenVal.html(trailLenS.value());
+
 
 
   if (state === "preview") {
@@ -284,6 +302,7 @@ function draw() {
     previewPendulum.m2 = m2S.value();
 
     previewPendulum.draw(originX, originY, true);
+    pop()
     return;
   }
 
@@ -301,6 +320,7 @@ function draw() {
   if (original) {
     original.draw(originX, originY, true);
   }
+  pop();
 }
 
 
